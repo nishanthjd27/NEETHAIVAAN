@@ -1,0 +1,16 @@
+{
+  "name": "neethivaan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root workspace — runs both client and server concurrently",
+  "scripts": {
+    "dev":   "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix server && npm run build --prefix client",
+    "start": "npm run start --prefix server",
+    "seed":  "npm run seed --prefix server",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

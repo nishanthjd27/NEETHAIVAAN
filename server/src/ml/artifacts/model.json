@@ -1,0 +1,19 @@
+{
+  "_comment": "Placeholder model artifact. Replace with real trained model weights/vocab.",
+  "version": "0.1.0",
+  "type": "keyword_rules",
+  "trainedAt": null,
+  "accuracy": null,
+  "classes": [
+    "tenant_rights", "police_complaint", "consumer_fraud",
+    "labour_dispute", "medical_negligence", "corruption_report",
+    "harassment_complaint", "property_dispute", "cybercrime",
+    "traffic_dispute", "general_grievance"
+  ],
+  "TODO": [
+    "1. Collect 500+ labelled complaints in training_data.jsonl",
+    "2. Run: cd server/src/ml && python train.py",
+    "3. Replace this file with the output model.pkl / model.json",
+    "4. Update intentClassifier.ts to load and use the real model"
+  ]
+}

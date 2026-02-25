@@ -1,0 +1,12 @@
+# path: .gitignore
+node_modules/
+dist/
+.env
+*.env.local
+.DS_Store
+*.log
+coverage/
+.vite/
+server/src/ml/artifacts/*.pkl
+# Keep the placeholder model.json but ignore real trained models
+!server/src/ml/artifacts/model.json
