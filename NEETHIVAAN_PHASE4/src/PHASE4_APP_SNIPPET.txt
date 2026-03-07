@@ -1,0 +1,78 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEETHIVAAN – Phase 4 │ app.ts Integration Snippet
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ADD this import near the top of src/app.ts
+   (alongside your existing route imports):
+
+   ─────────────────────────────────────────────
+   import publicRoutes from "./routes/publicRoutes";
+   ─────────────────────────────────────────────
+
+
+2. ADD this route mount BEFORE your 404 / error-handler middleware:
+
+   ─────────────────────────────────────────────
+   // Phase 4 – Public complaint tracking (no auth)
+   app.use("/api/public", publicRoutes);
+   ─────────────────────────────────────────────
+
+
+3. USAGE – New complaint creation (in your existing complaint service):
+   Call generateTrackingToken() when saving a new complaint,
+   store the hash, and return the raw token to the citizen ONCE.
+
+   ─────────────────────────────────────────────
+   import { generateTrackingToken } from "../utils/trackingToken";
+
+   const { rawToken, tokenHash } = generateTrackingToken();
+
+   const complaint = new Complaint({
+     // ... all other fields ...
+     publicTrackingTokenHash: tokenHash,
+   });
+
+   await complaint.save();
+
+   // Return rawToken to citizen exactly once (SMS / email / response)
+   return res.status(201).json({
+     success: true,
+     message: "Complaint filed successfully.",
+     trackingToken: rawToken,   // ← citizen saves this
+     data: complaint,
+   });
+   ─────────────────────────────────────────────
+
+
+4. PUBLIC TRACKING ENDPOINT (no login needed):
+
+   GET /api/public/track/:token
+
+   Example:
+   GET /api/public/track/a3f9c2e1...{64-char-hex-token}
+
+   Response:
+   {
+     "success": true,
+     "message": "Complaint details retrieved successfully.",
+     "data": {
+       "ticketNumber": "NTV-2024-00123",
+       "category": "Roads",
+       "status": "in_progress",
+       "priority": "high",
+       "department": "PWD",
+       "statusHistory": [...],
+       "filedAt": "2024-03-01T10:00:00.000Z",
+       "lastUpdated": "2024-03-05T14:30:00.000Z"
+     }
+   }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Security Notes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  • The raw 64-char token is NEVER stored in the database.
+  • Only its SHA-256 hash (publicTrackingTokenHash) is persisted.
+  • The raw token is returned to the citizen exactly once at filing.
+  • Even if the DB is compromised, tokens cannot be reversed.
+  • The /api/public/* route intentionally has NO auth middleware.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
