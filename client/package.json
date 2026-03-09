@@ -1,6 +1,1 @@
-{
-  "name": "neethivaan-client-legacy",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Legacy folder - not in use. Active frontend is in /frontend"
-}
+{"name":"neethivaan-client-legacy","version":"1.0.0","private":true}
