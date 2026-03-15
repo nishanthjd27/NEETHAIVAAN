@@ -29,7 +29,7 @@ const UserSchema = new Schema<IUser>(
 // Never return password field in JSON responses
 UserSchema.set('toJSON', {
   transform: (_doc, ret) => {
-    delete ret.password;
+    delete (ret as Partial<IUser>).password;
     return ret;
   },
 });

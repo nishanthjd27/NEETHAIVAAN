@@ -4,7 +4,7 @@
   "description": "NEETHIVAAN backend – AI-Driven Legal Awareness & Grievance Management API",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc", 
+    "build": "tsc", 
     "start": "node dist/index.js",
     "postinstall": "npm run build" 
   },
