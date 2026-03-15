@@ -2,7 +2,7 @@
 // Global authentication state. Persists JWT to localStorage.
 // All components access auth via useAuth() hook.
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../utils/api';
 
