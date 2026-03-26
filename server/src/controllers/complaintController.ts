@@ -100,7 +100,8 @@ export const getComplaint = async (
     if (!complaint) { next(createError('Complaint not found', 404)); return; }
 
     // Non-admins can only view their own complaints
-    const isOwner = complaint.userId.toString() === req.user!.id;
+    const complainantId = (complaint.userId as any)._id ? (complaint.userId as any)._id.toString() : complaint.userId.toString();
+    const isOwner = complainantId === req.user!.id;
     const isPrivileged = ['admin','lawyer'].includes(req.user!.role);
     if (!isOwner && !isPrivileged) {
       next(createError('Access denied', 403)); return;
